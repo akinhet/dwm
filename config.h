@@ -74,9 +74,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] 		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  		= { "alacritty", NULL };
-static const char *lockcmd[]  		= { "/home/akinhet/git/small-scripts/dmenu-powermenu.sh", NULL };
 static const char *screenshotcmd[]	= { "/bin/sh", "-c", "maim -s Pictures/Screenshots/$(date +%s).png | xclip -selection clipboard -t image/png", NULL };
-static const char *wallpapercmd[] 	= { "/bin/bash", "/home/akinhet/git/small-scripts/wallpaper.sh", NULL };
+static const char *wallpapercmd[] 	= { "/home/akinhet/git/small-scripts/wallpaper.sh", NULL };
+static const char *powercmd[] 		= { "/home/akinhet/git/small-scripts/powermenu.sh", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -117,7 +117,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 	// custom
-	{ MODKEY|ShiftMask,             XK_Pause,  spawn,          {.v = lockcmd } },
+	{ MODKEY|ShiftMask,             XK_Pause,  spawn,          {.v = powercmd } },
 	{ ShiftMask,             	XK_Pause,  spawn,          {.v = screenshotcmd } },
 	{ MODKEY|ShiftMask,            	XK_r,	   spawn,          {.v = wallpapercmd } },
 };
