@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static const unsigned int borderpx       = 1;  /* border pixel of windows */
@@ -11,8 +12,8 @@ static const int systraypinningfailfirst = 1;  /* 1: if pinning fails, display s
 static const int showsystray             = 1;  /* 0 means no systray */
 static const int showbar                 = 1;  /* 0 means no bar */
 static const int topbar                  = 1;  /* 0 means bottom bar */
-static const char *fonts[]               = { "SauceCodePro Nerd Font:size=10" };
-static const char dmenufont[]            = "SauceCodePro Nerd Font:size=10";
+static const char *fonts[]               = { "SauceCodePro Nerd Font:size=9" };
+static const char dmenufont[]            = "SauceCodePro Nerd Font:size=9";
 static const char col_gray1[]            = "#222222";
 static const char col_gray2[]            = "#444444";
 static const char col_gray3[]            = "#bbbbbb";
@@ -37,13 +38,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class       instance          title           tags mask  isfloating  monitor */
-	{ "zen",       NULL,             NULL,           1 << 0, 0, 0 },
-	{ "feishin",   NULL,             NULL,           1 << 8, 0, 0 },
-	{ "vesktop",   NULL,             NULL,           1 << 8, 0, 1 },
-	{ "steam_app", "steam_app",      NULL,           1 << 6, 0, 1 },
-	{ "steam",     "steamwebhelper", NULL,           1 << 7, 0, 1 },
-	{ "steam",     "steamwebhelper", "Friends List", 1 << 7, 1, 1 },
+	/* class         instance          title           tags mask  isfloating  monitor */
+	{ "feishin",     NULL,             NULL,           1 << 7, 0, -1 },
+	{ "vesktop",     NULL,             NULL,           1 << 8, 0, -1 },
+	{ "steam_app",   "steam_app",      NULL,           1 << 5, 0, -1 },
+	{ "steam",       "steamwebhelper", NULL,           1 << 6, 0, -1 },
+	{ "steam",       "steamwebhelper", "Friends List", 1 << 6, 1, -1 },
+	{ "pavucontrol", NULL,             NULL,                0, 1, -1 },
 };
 
 /* layout(s) */
@@ -78,6 +79,14 @@ static const char *termcmd[]       = { "alacritty", NULL };
 static const char *screenshotcmd[] = { "/bin/sh", "-c", "maim -s | tee /home/akinhet/Pictures/Screenshots/$(date +%s).png | xclip -selection clipboard -t image/png", NULL };
 static const char *wallpapercmd[]  = { "/home/akinhet/git/small-scripts/wallpaper.sh", NULL };
 static const char *powercmd[]      = { "/home/akinhet/git/small-scripts/powermenu.sh", NULL };
+
+static const char *brupcmd[]       = { "brightnessctl", "set", "10%+", NULL };
+static const char *brdowncmd[]     = { "brightnessctl", "set", "10%-", NULL };
+static const char *mutecmd[]       = { "pactl", "set-sink-mute", "0", "toggle", NULL };
+static const char *volupcmd[]      = { "pactl", "set-sink-volume", "0", "+5%", NULL };
+static const char *voldowncmd[]    = { "pactl", "set-sink-volume", "0", "-5%", NULL };
+static const char *micmutecmd[]    = { "pactl", "set-source-mute", "0", "toggle", NULL };
+static const char *wlancmd[]       = { "iwctl", "station", "wlan0", "scan", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -118,9 +127,16 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} },
 	// custom
-	{ MODKEY|ShiftMask,             XK_Pause,  spawn,          {.v = powercmd } },
-	{ ShiftMask,                    XK_Pause,  spawn,          {.v = screenshotcmd } },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          {.v = powercmd } },
+	{ 0,                            XK_Print,  spawn,          {.v = screenshotcmd } },
 	{ MODKEY|ShiftMask,             XK_r,      spawn,          {.v = wallpapercmd } },
+	{ 0,	XF86XK_MonBrightnessUp,	           spawn,          {.v = brupcmd } },
+	{ 0,	XF86XK_MonBrightnessDown,          spawn,          {.v = brdowncmd } },
+	{ 0,	XF86XK_AudioMute,		           spawn,          {.v = mutecmd } },
+	{ 0,	XF86XK_AudioRaiseVolume,           spawn,          {.v = volupcmd } },
+	{ 0,	XF86XK_AudioLowerVolume,           spawn,		   {.v = voldowncmd } },
+	{ 0,	XF86XK_AudioMicMute,	           spawn,          {.v = micmutecmd } },
+	{ 0,	XF86XK_Favorites,		           spawn,          {.v = wlancmd } },
 };
 
 /* button definitions */
